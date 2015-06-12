@@ -47,6 +47,17 @@ describe("Lexer", function() {
     expectToken(tokens.pop(), 'string', 'an example string');
     expectToken(tokens.pop(), 'delimiter', ')');
   });
+  it("should tokenize uncontained variables", function() {
+    var input = "(define \"an example string\") test";
+    var tokens = Lexer.lex(input);
+
+    tokens.reverse();
+    expectToken(tokens.pop(), 'delimiter', '(');
+    expectToken(tokens.pop(), 'variable', 'define');
+    expectToken(tokens.pop(), 'string', 'an example string');
+    expectToken(tokens.pop(), 'delimiter', ')');
+    expectToken(tokens.pop(), 'variable', 'test');
+  });
   it("should tokenzie atoms", function() {
     var input = "(define (add a b) (+ a b))";
     var tokens = Lexer.lex(input);

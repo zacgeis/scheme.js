@@ -17,4 +17,12 @@ describe("Parser", function() {
     expect(ast[0].at(1).at(0).value).toEqual('add');
     expect(ast[0].at(2).at(0).value).toEqual('+');
   });
+  it("should parse uncontained statements", function() {
+    var input = "(define test 1) test";
+    var tokens = Lexer.lex(input);
+    var ast = Parser.parse(tokens);
+
+    expect(ast[0].at(1).value).toEqual('test');
+    expect(ast[1].value).toEqual('test');
+  });
 });
