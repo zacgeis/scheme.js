@@ -77,4 +77,14 @@ describe("Evaluator", function() {
     var result = evaluator.input(str);
     expect(result).toEqual(3);
   });
+  it("should support begin", function() {
+    var str = '(begin (+ 1 2) (+ 4 5))';
+    var result = evaluator.input(str);
+    expect(result).toEqual(9);
+  });
+  it("should support let", function() {
+    var str = '(let ((a 1) (b 4)) (= 1 1) (+ a b))';
+    var result = evaluator.input(str);
+    expect(result).toEqual(5);
+  });
 });
