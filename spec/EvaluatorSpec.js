@@ -72,4 +72,9 @@ describe("Evaluator", function() {
     var result = evaluator.input(str);
     expect(result).toEqual("an example string");
   });
+  it("should support lambdas", function() {
+    var str = '(define test (lambda (a b) (+ a b))) (test 1 2)';
+    var result = evaluator.input(str);
+    expect(result).toEqual(3);
+  });
 });
