@@ -1,34 +1,51 @@
 var Lexer = (function() {
   function Lexer() {
-    this.t = [];
-    this.b = '';
+    this.tokens = [];
+    this.buffer = '';
+    this.stringLiteral = false;
   }
   Lexer.prototype = {
-    _cas: function(c) {
-      if(/-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?/.test(c)) {
-        return Number(c);
+    _pushToken: function(str) {
+      var token = null;
+      if(/-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?/.test(str)) {
+        token = new Token('number', Number(str));
+      } else if(/#t|#f/.test(str)) {
+        token = new Token('boolean', str === '#t');
+      } else if(str === '(' || str === ')' || str === ' ') {
+        token = new Token('delimiter', str);
+      } else if(/"(.*)"/.test(str)) {
+        token = new Token('string', str.match(/"(.*)"/)[1]);
+      } else {
+        token = new Token('variable', str);
       }
-      return c;
+      this.tokens.push(token);
     },
-    _cap: function(c) {
-      this.b !== '' && this.t.push(this._cas(this.b));
-      c && c!== '' && this.t.push(this._cas(c));
-      this.b = '';
+    _pushBuffer: function() {
+      if(this.buffer.length > 0) {
+        this._pushToken(this.buffer);
+        this.buffer = '';
+      }
     },
     lex: function(input) {
-      this.t = [];
-      this.b = '';
+      Lexer.call(this);
       for(var i = 0; i < input.length; i++) {
-        var c = input[i];
-        if(c === ' ') {
-          this._cap();
-        } else if(c === '(' || c === ')') {
-          this._cap(c);
+        var char = input[i];
+        if(!this.stringLiteral && (char === '(' || char === ')' || char === ' ')) {
+          this._pushBuffer();
+          this._pushToken(char);
+        } else if(char === '"') {
+          this.buffer += char;
+          if(this.stringLiteral) {
+            this._pushBuffer();
+          }
+          this.stringLiteral = !this.stringLiteral;
         } else {
-          this.b += c;
+          this.buffer += char;
         }
       }
-      return this.t;
+      return this.tokens.filter(function(token) {
+        return !(token.type === 'delimiter' && token.value === ' ')
+      });
     }
   }
   return new Lexer();

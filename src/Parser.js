@@ -1,26 +1,26 @@
 var Parser = (function() {
   function Parser() {
-    this.s = [];
-    this.cn = null;
+    this.root = new Expression();
+    this.current = this.root;
+    this.history = [];
   }
   Parser.prototype = {
     parse: function(tokens) {
-      this.s = [];
-      this.cn = this.s;
+      Parser.call(this);
       for(var i = 0; i < tokens.length; i++) {
-        var t = tokens[i];
-        if(t === '(') {
-          var bl = [];
-          this.cn.push(this.cn = bl);
-          this.s.push(this.cn);
-        } else if(t === ')') {
-          this.s.pop();
-          this.cn = this.s[this.s.length-1];
+        var token = tokens[i];
+        if(token.type === 'delimiter' && token.value === '(') {
+          var next = new Expression();
+          this.current.value.push(next);
+          this.history.push(this.current);
+          this.current = next;
+        } else if(token.type === 'delimiter' && token.value === ')') {
+          this.current = this.history.pop();
         } else {
-          this.cn.push(t);
+          this.current.value.push(token);
         }
       }
-      return this.s[0];
+      return this.root.value;
     }
   }
   return new Parser();

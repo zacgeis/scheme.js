@@ -1,17 +1,69 @@
+function expectToken(token, type, value) {
+  expect(token.type).toEqual(type);
+  expect(token.value).toEqual(value);
+}
+
 describe("Lexer", function() {
-  it("should lex simple expressions", function() {
+  it("should tokenize simple expressions", function() {
     var input = "(+ 1 1)";
     var tokens = Lexer.lex(input);
-    expect(tokens).toEqual(['(', '+', 1, 1, ')']);
+
+    tokens.reverse();
+    expectToken(tokens.pop(), 'delimiter', '(');
+    expectToken(tokens.pop(), 'variable', '+');
+    expectToken(tokens.pop(), 'number', 1);
+    expectToken(tokens.pop(), 'number', 1);
+    expectToken(tokens.pop(), 'delimiter', ')');
   });
-  it("should group numbers correctly", function() {
+  it("should tokenize numbers", function() {
     var input = "(+ 1.0 100)";
     var tokens = Lexer.lex(input);
-    expect(tokens).toEqual(['(', '+', 1, 100, ')']);
+
+    tokens.reverse();
+    expectToken(tokens.pop(), 'delimiter', '(');
+    expectToken(tokens.pop(), 'variable', '+');
+    expectToken(tokens.pop(), 'number', 1);
+    expectToken(tokens.pop(), 'number', 100);
+    expectToken(tokens.pop(), 'delimiter', ')');
   });
-  it("should group atoms correctly", function() {
+  it("should tokenize booleans", function() {
+    var input = "(= #t #f)";
+    var tokens = Lexer.lex(input);
+
+    tokens.reverse();
+    expectToken(tokens.pop(), 'delimiter', '(');
+    expectToken(tokens.pop(), 'variable', '=');
+    expectToken(tokens.pop(), 'boolean', true);
+    expectToken(tokens.pop(), 'boolean', false);
+    expectToken(tokens.pop(), 'delimiter', ')');
+  });
+  it("should tokenize strings", function() {
+    var input = "(display \"an example string\")";
+    var tokens = Lexer.lex(input);
+
+    tokens.reverse();
+    expectToken(tokens.pop(), 'delimiter', '(');
+    expectToken(tokens.pop(), 'variable', 'display');
+    expectToken(tokens.pop(), 'string', 'an example string');
+    expectToken(tokens.pop(), 'delimiter', ')');
+  });
+  it("should tokenzie atoms", function() {
     var input = "(define (add a b) (+ a b))";
     var tokens = Lexer.lex(input);
-    expect(tokens).toEqual(['(', 'define', '(', 'add', 'a', 'b', ')', '(', '+', 'a', 'b', ')', ')']);
+
+    tokens.reverse();
+    expectToken(tokens.pop(), 'delimiter', '(');
+    expectToken(tokens.pop(), 'variable', 'define');
+    expectToken(tokens.pop(), 'delimiter', '(');
+    expectToken(tokens.pop(), 'variable', 'add');
+    expectToken(tokens.pop(), 'variable', 'a');
+    expectToken(tokens.pop(), 'variable', 'b');
+    expectToken(tokens.pop(), 'delimiter', ')');
+    expectToken(tokens.pop(), 'delimiter', '(');
+    expectToken(tokens.pop(), 'variable', '+');
+    expectToken(tokens.pop(), 'variable', 'a');
+    expectToken(tokens.pop(), 'variable', 'b');
+    expectToken(tokens.pop(), 'delimiter', ')');
+    expectToken(tokens.pop(), 'delimiter', ')');
   });
 });
