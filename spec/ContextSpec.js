@@ -6,23 +6,23 @@ describe("Context", function() {
       return 1;
     });
   });
-  it("should handle simple lookups", function() {
-    var plus = root.lookup('+');
+  it("should handle simple resovles", function() {
+    var plus = root.resolve('+');
     expect(typeof plus).toEqual('function');
   });
-  it("should handle branching lookups", function() {
+  it("should handle branching resolves", function() {
     var branch = root.branch();
     branch.set('a', 1);
 
-    var plus = root.lookup('+');
+    var plus = root.resolve('+');
     expect(typeof plus).toEqual('function');
-    expect(branch.lookup('a')).toEqual(1);
+    expect(branch.resolve('a')).toEqual(1);
   });
-  it("should handle lookup parent sets", function() {
+  it("should handle resolve parent sets", function() {
     var branch = root.branch();
     branch.set('+', 1, true);
 
-    var plus = root.lookup('+');
-    expect(plus).toEqual(1);
+    var plus = root.resolve('+');
+    expect(typeof plus).toEqual('function');
   });
 });
