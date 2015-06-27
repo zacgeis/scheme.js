@@ -11,8 +11,8 @@ describe("Lexer", function() {
     tokens.reverse();
     expectToken(tokens.pop(), 'delimiter', '(');
     expectToken(tokens.pop(), 'variable', '+');
-    expectToken(tokens.pop(), 'number', 1);
-    expectToken(tokens.pop(), 'number', 1);
+    expectToken(tokens.pop(), 'number', '1');
+    expectToken(tokens.pop(), 'number', '1');
     expectToken(tokens.pop(), 'delimiter', ')');
   });
   it("should tokenize numbers", function() {
@@ -22,8 +22,8 @@ describe("Lexer", function() {
     tokens.reverse();
     expectToken(tokens.pop(), 'delimiter', '(');
     expectToken(tokens.pop(), 'variable', '+');
-    expectToken(tokens.pop(), 'number', 1);
-    expectToken(tokens.pop(), 'number', 100);
+    expectToken(tokens.pop(), 'number', '1.0');
+    expectToken(tokens.pop(), 'number', '100');
     expectToken(tokens.pop(), 'delimiter', ')');
   });
   it("should tokenize booleans", function() {
@@ -33,8 +33,8 @@ describe("Lexer", function() {
     tokens.reverse();
     expectToken(tokens.pop(), 'delimiter', '(');
     expectToken(tokens.pop(), 'variable', '=');
-    expectToken(tokens.pop(), 'boolean', true);
-    expectToken(tokens.pop(), 'boolean', false);
+    expectToken(tokens.pop(), 'boolean', '#t');
+    expectToken(tokens.pop(), 'boolean', '#f');
     expectToken(tokens.pop(), 'delimiter', ')');
   });
   it("should tokenize strings", function() {
