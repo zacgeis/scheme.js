@@ -49,7 +49,7 @@ describe("Evaluator", function() {
     expect(result).toEqual(new SValue('number', 2));
   });
   it("should handle dot expressions", function() {
-    var str = '(define (test . args) args) (test 1 2 3)'
+    var str = '(define (test . args) args) (test 1 2 3)';
     var result = evaluator.input(str);
     expect(result).toEqual(new SValue('list', [new SValue('number', 1), new SValue('number', 2), new SValue('number', 3)]));
   });
@@ -60,7 +60,7 @@ describe("Evaluator", function() {
   });
   it("should allow for repl like behavior", function() {
     var str1 = '(define a 1)';
-    var str2 = '(set! a 3)'
+    var str2 = '(set! a 3)';
     var str3 = '(+ a 2)';
     evaluator.input(str1);
     evaluator.input(str2);
