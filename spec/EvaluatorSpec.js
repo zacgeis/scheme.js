@@ -147,4 +147,14 @@ describe("Evaluator", function() {
       done();
     });
   });
+  /*
+  it("should optimize tail call procs", function(done) {
+    var str = '(define (factorial n x) (if (= n 0) x (factorial (- n 1) (* n x)))) (factorial 40 1)';
+    evaluator.maximumStackDepth = 12;
+    evaluator.input(str, function(result) {
+      expect(result).toEqual(new SValue('number', 120));
+      done();
+    });
+  });
+  */
 });
