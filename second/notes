@@ -1,0 +1,28 @@
+- if and define are not macros
+- evaluate a single value that doesn't require a function call
+- evaluate a list of nodes
+- have stack frames
+- if it's a node we need to make a function call and return to where the calulation was happening
+- we don't always want to evaluate nodes like the if statement
+- stack frames always have a
+  - function name
+  - arguments
+  - environment
+- stack frames always return just a single value
+- the stack frames don't need to directly correspond to the AST
+- what does the root frame look like?
+- what if we only have a single non function call expression?
+- keep a pointer to the location in the AST and also have a stack frame if needed
+- stack levels and the ast itself are what make the program
+- keep a stack pointer in the stack and also have a pointer from there into where you are in the AST.
+- make the AST traversable by using a doubly linked list tree structure
+
+(+ 1 2)
+"test"
+true
+1.0
+some-var
+(if (> 1 0) (+ 1 2) (+ 3 4))
+(if true 1 2)
+(define (add a b) (+ a b))
+(add 1 2)
