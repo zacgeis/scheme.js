@@ -389,6 +389,7 @@ call add
 // caller pushes values on to the stack
 // callee loads values into env
 // TODO: make these into real examples in a markdown doc with the types and what the opcodes do
+// TODO: include diagrams
 
 adder:
   load "x"
